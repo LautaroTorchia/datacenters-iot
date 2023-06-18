@@ -1,0 +1,33 @@
+Trabajo Refrigeracion Datacenters
+Monitoreo de aires acondicionados
+    Contempla:
+    ● Desarrollo de nodo sensor con sensores de temperatura , detección de agua y
+    emisores infrarrojos como actuadores
+    ● Control de equipos multimarca
+    ● Comunicación inalámbrica
+
+funcionalidades:
+Nodos ESP-32 con sensores de:
+   - temperatura
+   - deteccion de agua 
+   - emisores infrarojos 
+con los sensores se captura y envia INFORMACION y esa informacion se envia al MQTT Broker
+
+MQTT Broker:
+en cada uno de los [] hay informacion para consumir o consultar 
+["temperatura"] 
+["humedad"]
+["agua"]
+["acciones"]
+
+
+Grafana-Influx:
+Se comunican con el broker para almacenar la informacion en influx y grafana hacer graficos
+VER: Que graficos hacer!
+Al menos 3/4 graficos
+
+
+Cosas que se podrian o estarian buenas implementar:
+- Un sistema de autenticacion en donde un usuario se autentica y puede enviarle acciones a realizar a un nodo controlador 
+- Un sistema de alarma para cuando existen peligros en distintos niveles notificar a la persona de guardia del datacenter 
+
