@@ -1,0 +1,20 @@
+{
+    "guardias": [
+      {
+        "nombre": "Lautaro Torchia",
+        "dia": "Lunes",
+        "chat_id": "chat_id_1"
+      },
+      {
+        "nombre": "Gregorio Maclen",
+        "dia": "Martes",
+        "chat_id": "chat_id_2"
+      },
+      {
+        "nombre": "Martina Martins",
+        "dia": "Miércoles",
+        "chat_id": "chat_id_3"
+      }
+    ]
+  }
+  
