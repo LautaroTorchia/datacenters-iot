@@ -1,20 +1,30 @@
 {
-    "guardias": [
-      {
-        "nombre": "Lautaro Torchia",
-        "dia": "Lunes",
-        "chat_id": "chat_id_1"
-      },
-      {
-        "nombre": "Gregorio Maclen",
-        "dia": "Martes",
-        "chat_id": "chat_id_2"
-      },
-      {
-        "nombre": "Martina Martins",
-        "dia": "Miércoles",
-        "chat_id": "chat_id_3"
-      }
-    ]
-  }
+  "guardias": [
+    {
+      "nombre": "Lautaro Torchia",
+      "dia": "lunes",
+      "chat_id": "chat_id_1",
+      "telefono": "telefono_1"
+    },
+    {
+      "nombre": "Gregorio Maclen",
+      "dia": "martes",
+      "chat_id": "chat_id_2",
+      "telefono": "telefono_2"
+    },
+    {
+      "nombre": "Martina Martins",
+      "dia": "miercoles",
+      "chat_id": "chat_id_3",
+      "telefono": "telefono_3"
+    },
+    {
+      "nombre": "Martin Martins",
+      "dia": "juevess",
+      "chat_id": "chat_id_3",
+      "telefono": "telefono_4"
+    }
+  ]
+}
+
   
