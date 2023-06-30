@@ -3,73 +3,52 @@
 #include <IRremoteESP8266.h>
 #include <IRsend.h>
 
-// Información de la red WiFi
 const char* ssid = "nombre_de_la_red";
 const char* password = "contraseña_de_la_red";
 
-// Información del Broker MQTT
-const char* mqttServer = "137.184.125.122";
-const int mqttPort = 1883;
+const int mqtt_port = 1883;
+const char* mqtt_server = "137.184.125.122";
+const char* mqtt_topic = "datacenter_actions";
+const char* mqtt_client_name = "ESP32Client";
 
-// Pins de salida para el control infrarrojo
-const int IR_PIN = 5;
-
-// Cliente WiFi y MQTT
 WiFiClient espClient;
 PubSubClient client(espClient);
 
+// Pins de salida para el control infrarrojo
+const int IR_PIN = 5;
 // Objeto para enviar señales infrarrojas
 IRsend irsend(IR_PIN);
 
 void setup() {
-  // Inicializar la comunicación serie
   Serial.begin(115200);
 
-  // Conectar a la red WiFi
   WiFi.begin(ssid, password);
-
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
     Serial.println("Conectando a WiFi...");
   }
 
-  Serial.println("Conectado a la red WiFi");
-
-  // Conectar al Broker MQTT
   client.setServer(mqttServer, mqttPort);
+  client.setCallback(callback);
 
-  while (!client.connected()) {
-    Serial.println("Conectando al Broker MQTT...");
-
-    if (client.connect("ESP32Client")) {
-      Serial.println("Conectado al Broker MQTT");
-      client.subscribe("datacenter/ac_control");
-    } else {
-      Serial.print("Error al conectar al Broker MQTT. Estado: ");
-      Serial.print(client.state());
-      delay(2000);
-    }
-  }
+  connect();
 }
 
 void loop() {
-  if (!client.connected()) {
-    reconnect();
-  }
-
+  if (!client.connected())
+    connect();
   client.loop();
 }
 
-void reconnect() {
+void connect() {
   while (!client.connected()) {
-    Serial.println("Intentando reconectar al Broker MQTT...");
-
-    if (client.connect("ESP32Client")) {
+    Serial.println("Conectando al Broker MQTT...");
+    if (client.connect(mqtt_client_name)) {
       Serial.println("Conectado al Broker MQTT");
-      client.subscribe("datacenter/ac_control");
+      client.subscribe(mqtt_topic);
     } else {
       Serial.print("Error al reconectar al Broker MQTT. Estado: ");
-      Serial.print(client.state());
+      Serial.println(client.state());
       delay(2000);
     }
   }
@@ -79,22 +58,18 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.print("Mensaje recibido en el topic: ");
   Serial.println(topic);
 
-  if (strcmp(topic, "datacenter/ac_control") == 0) {
-    if (payload[0] == '1') {
-      Serial.println("Encendiendo el aire acondicionado...");
-      // Enviar la señal infrarroja para encender el aire acondicionado
-      irsend.sendNEC(0x20DF10EF, 32); // Ejemplo de código infrarrojo para encender
-    } else if (payload[0] == '0') {
-      Serial.println("Apagando el aire acondicionado...");
-      // Enviar la señal infrarroja para apagar el aire acondicionado
-      irsend.sendNEC(0x20DF609F, 32); // Ejemplo de código infrarrojo para apagar
-    }
-  }
-}
+  String messageTemp;
 
-void setup() {
-  // Resto del código de configuración (WiFi, MQTT, etc.)
+  for (int i = 0; i < length; i++)
+    messageTemp += (char)payload[i];
+  Serial.println(messageTemp);
 
-  // Asignar la función de callback al cliente MQTT
-  client.setCallback(callback);
+  if (messageTemp == "encender") {
+    Serial.println("Encendiendo el aire acondicionado");
+    irsend.sendNEC(0x20DF10EF, 32);
+  } else if (messageTemp == "apagar") {
+    Serial.println("Apagando el aire acondicionado");
+    irsend.sendNEC(0x20DF906F, 32);
+  } else
+    Serial.println("Comando desconocido");
 }
