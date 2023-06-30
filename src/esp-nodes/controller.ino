@@ -3,13 +3,13 @@
 #include <IRremoteESP8266.h>
 #include <IRsend.h>
 
-const char* ssid = "nombre_de_la_red";
-const char* password = "contraseña_de_la_red";
+const char* ssid = "Wokwi-GUEST";
+const char* password = "";
 
 const int mqtt_port = 1883;
 const char* mqtt_server = "137.184.125.122";
-const char* mqtt_topic = "datacenter_actions";
-const char* mqtt_client_name = "ESP32Client";
+const char* mqtt_topic = "datacenter/actions";
+const char* mqtt_client_name = "ESP32Controller";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
