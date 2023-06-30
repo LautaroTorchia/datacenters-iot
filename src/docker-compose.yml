@@ -9,13 +9,26 @@ services:
 
   api-guardias:
     build:
-      context: .
-      dockerfile: ./api-guardias/Dockerfile
+      context: api-guardias/
+      dockerfile: Dockerfile
     ports:
       - "5000:5000"
+    volumes:
+      - ./api-guardias/personas_guardia.json:/app/personas_guardia.json
+  
+  db-guardias:
+    image: postgres:13
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-api:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=datacenter
+      - POSTGRES_PASSWORD=datacenter
+      - POSTGRES_DB=guardias
 
   influxdb:
-    image: influxdb
+    image: influxdb:1.8
     ports:
       - "8086:8086"
     volumes:
@@ -41,3 +54,4 @@ services:
 
 volumes:
   influxdb:
+  db-api:

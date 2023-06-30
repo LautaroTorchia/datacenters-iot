@@ -10,8 +10,13 @@ const char* password = "";
 const char* mqttServer = "137.184.125.122";
 const int mqttPort = 1883;
 
+// Pins de entrada para los sensores
+const int DHT_PIN = 15;
+const int WATER_SENSOR_SIGNAL_PIN = 32;
+
+//
+const int TIME_BETWEEN_MEASURE = 5 * 60 * 1000;
 // Información del sensor DHT
-#define DHT_PIN 4
 DHTesp dht;
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -52,26 +57,38 @@ void setup() {
   
   // Inicializar el sensor DHT
   dht.setup(DHT_PIN, DHTesp::DHT22);
+  // Inicializamos el sensor de agua
+  pinMode(WATER_SENSOR_SIGNAL_PIN, INPUT);
 }
 
 void loop() {
   // Obtener lecturas de temperatura y humedad
+
+  // Obtener estado de la detección de agua
   TempAndHumidity dhtData = dht.getTempAndHumidity();
   float temperature = dhtData.temperature;
   float humidity = dhtData.humidity;
-  // Obtener estado de la detección de agua
-  //bool waterDetected = digitalRead(WATER_PIN);
 
+  //check water
+  int water = checkWater();
+  
   // Publicar los datos en el Broker MQTT
   String temperaturePayload = String(temperature);
   String humidityPayload = String(humidity);
-  //String waterPayload = waterDetected ? "1" : "0";
-  
+  String waterPayload = String(water);
+
   client.publish("datacenter/temperature", temperaturePayload.c_str());
   client.publish("datacenter/humidity", humidityPayload.c_str());
-  //client.publish("datacenter/water", waterPayload.c_str());
+  client.publish("datacenter/water", waterPayload.c_str());
 
   Serial.println("Datos publicados en el Broker MQTT");
 
-  delay(5000);
+  delay(TIME_BETWEEN_MEASURE);
+}
+
+int checkWater(){
+  int water = analogRead(WATER_SENSOR_SIGNAL_PIN);
+  Serial.print("Water: ");
+  Serial.println(water);
+  return water;
 }
