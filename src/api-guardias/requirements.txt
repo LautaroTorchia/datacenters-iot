@@ -1,1 +1,4 @@
 flask==2.3.2
+psycopg2-binary==2.9.1
+SQLAlchemy==1.4.31
+Flask-sqlalchemy==2.5.1
