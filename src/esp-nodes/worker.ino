@@ -1,23 +1,25 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
-#include <DHT.h>
+#include <DHTesp.h>
 
 // Información de la red WiFi
-const char* ssid = "nombre_de_la_red";
-const char* password = "contraseña_de_la_red";
+const char* ssid = "Wokwi-GUEST";
+const char* password = "";
 
 // Información del Broker MQTT
 const char* mqttServer = "137.184.125.122";
 const int mqttPort = 1883;
 
 // Información del sensor DHT
-#define DHTPIN 4
-#define DHTTYPE DHT22
-DHT dht(DHTPIN, DHTTYPE);
-
-// Cliente WiFi y MQTT
+#define DHT_PIN 4
+DHTesp dht;
 WiFiClient espClient;
 PubSubClient client(espClient);
+
+struct TemperatureAndHumidity {
+  float temperature;
+  float humidity;
+};
 
 void setup() {
   // Inicializar la comunicación serie
@@ -49,25 +51,25 @@ void setup() {
   }
   
   // Inicializar el sensor DHT
-  dht.begin();
+  dht.setup(DHT_PIN, DHTesp::DHT22);
 }
 
 void loop() {
   // Obtener lecturas de temperatura y humedad
-  float temperature = dht.readTemperature();
-  float humidity = dht.readHumidity();
-  
+  TempAndHumidity dhtData = dht.getTempAndHumidity();
+  float temperature = dhtData.temperature;
+  float humidity = dhtData.humidity;
   // Obtener estado de la detección de agua
-  bool waterDetected = digitalRead(WATER_PIN);
+  //bool waterDetected = digitalRead(WATER_PIN);
 
   // Publicar los datos en el Broker MQTT
   String temperaturePayload = String(temperature);
   String humidityPayload = String(humidity);
-  String waterPayload = waterDetected ? "1" : "0";
+  //String waterPayload = waterDetected ? "1" : "0";
   
   client.publish("datacenter/temperature", temperaturePayload.c_str());
   client.publish("datacenter/humidity", humidityPayload.c_str());
-  client.publish("datacenter/water", waterPayload.c_str());
+  //client.publish("datacenter/water", waterPayload.c_str());
 
   Serial.println("Datos publicados en el Broker MQTT");
 
