@@ -1,0 +1,624 @@
+[
+    {
+        "id": "391da2e83905b3e4",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "c70a495f461518d3",
+        "type": "mqtt in",
+        "z": "391da2e83905b3e4",
+        "name": "datacenter/temperature",
+        "topic": "datacenter/temperature",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "9defd2181960f8f9",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 80,
+        "wires": [
+            [
+                "d2066c92e7e8bb2c",
+                "3396c3453d0fdd11"
+            ]
+        ]
+    },
+    {
+        "id": "641d0147eb1b2e6f",
+        "type": "mqtt in",
+        "z": "391da2e83905b3e4",
+        "name": "datacenter/humidity",
+        "topic": "datacenter/humidity",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "9defd2181960f8f9",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 700,
+        "wires": [
+            [
+                "b1058d1a9e05fdcb"
+            ]
+        ]
+    },
+    {
+        "id": "4518be7b7a8301af",
+        "type": "mqtt in",
+        "z": "391da2e83905b3e4",
+        "name": "datacenter/water",
+        "topic": "datacenter/water",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "9defd2181960f8f9",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 180,
+        "y": 460,
+        "wires": [
+            [
+                "170d673f57a65784",
+                "bc9820a2d0e86322"
+            ]
+        ]
+    },
+    {
+        "id": "d2066c92e7e8bb2c",
+        "type": "influxdb out",
+        "z": "391da2e83905b3e4",
+        "influxdb": "fcbb68bf39c09eb8",
+        "name": "datacenter_temperature",
+        "measurement": "temperature",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 470,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "b1058d1a9e05fdcb",
+        "type": "influxdb out",
+        "z": "391da2e83905b3e4",
+        "influxdb": "fcbb68bf39c09eb8",
+        "name": "datacenter_humidity",
+        "measurement": "humidity",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 580,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "170d673f57a65784",
+        "type": "influxdb out",
+        "z": "391da2e83905b3e4",
+        "influxdb": "fcbb68bf39c09eb8",
+        "name": "datacenter_water",
+        "measurement": "water",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "bucket",
+        "x": 550,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "3396c3453d0fdd11",
+        "type": "switch",
+        "z": "391da2e83905b3e4",
+        "name": "Controlar  temperatura",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "lte",
+                "v": "10",
+                "vt": "str"
+            },
+            {
+                "t": "gte",
+                "v": "25",
+                "vt": "str"
+            },
+            {
+                "t": "gte",
+                "v": "35",
+                "vt": "str"
+            },
+            {
+                "t": "gt",
+                "v": "40",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 4,
+        "x": 340,
+        "y": 160,
+        "wires": [
+            [
+                "6169728cf955834a"
+            ],
+            [
+                "259d353f2ed2dd90"
+            ],
+            [
+                "e1aa9077996ce032"
+            ],
+            [
+                "5db680f87615206c"
+            ]
+        ]
+    },
+    {
+        "id": "259d353f2ed2dd90",
+        "type": "function",
+        "z": "391da2e83905b3e4",
+        "name": "Encender Aire acondicionado",
+        "func": "msg.payload='Encender';\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 940,
+        "y": 140,
+        "wires": [
+            [
+                "4b4a79bb51eaf731"
+            ]
+        ]
+    },
+    {
+        "id": "6169728cf955834a",
+        "type": "function",
+        "z": "391da2e83905b3e4",
+        "name": "Apagar aire acondicionado",
+        "func": "msg.payload=\"Apagar\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 940,
+        "y": 60,
+        "wires": [
+            [
+                "4b4a79bb51eaf731"
+            ]
+        ]
+    },
+    {
+        "id": "4b4a79bb51eaf731",
+        "type": "mqtt out",
+        "z": "391da2e83905b3e4",
+        "name": "datacenter_actions",
+        "topic": "datacenter/actions",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "9defd2181960f8f9",
+        "x": 1370,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "bc9820a2d0e86322",
+        "type": "switch",
+        "z": "391da2e83905b3e4",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "lte",
+                "v": "500",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 430,
+        "y": 480,
+        "wires": [
+            [
+                "29cc478ff6521b5b"
+            ]
+        ]
+    },
+    {
+        "id": "2f9829cd1c433491",
+        "type": "telegram sender",
+        "z": "391da2e83905b3e4",
+        "name": "Envio de mensaje de advertencia",
+        "bot": "0983c59c34f03c75",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 1400,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "726817b122ebeda6",
+        "type": "twilio out",
+        "z": "391da2e83905b3e4",
+        "twilio": "4e2c3b65d7b4b7a6",
+        "twilioType": "sms",
+        "url": " https://demo.twilio.com/welcome/voice/",
+        "number": "",
+        "name": "Llamada de emergencia",
+        "x": 1370,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "ae8f21e10316b141",
+        "type": "http request",
+        "z": "391da2e83905b3e4",
+        "name": "Llamada a api de guardias",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 800,
+        "y": 280,
+        "wires": [
+            [
+                "2fa13e6a8b14aee5"
+            ]
+        ]
+    },
+    {
+        "id": "5bc68ce46513191b",
+        "type": "function",
+        "z": "391da2e83905b3e4",
+        "name": "HayGuardia",
+        "func": "msg.payload = JSON.parse(msg.payload);\nmsg.payload = {\n    chatId: msg.payload.chat_id,\n    type: 'message',\n    content: `El datacenter ha sobrepasado limites peligrosos de Temperatura. Usted, ${msg.payload.nombre}, debería ocuparse de inmediato.`\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1210,
+        "y": 240,
+        "wires": [
+            [
+                "2f9829cd1c433491"
+            ]
+        ]
+    },
+    {
+        "id": "9b51021d53b2ef47",
+        "type": "http request",
+        "z": "391da2e83905b3e4",
+        "name": "Llamada a api de guardias",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://10.124.0.2:5000/guardia/1",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 700,
+        "y": 380,
+        "wires": [
+            [
+                "6442714ec277c494"
+            ]
+        ]
+    },
+    {
+        "id": "aa2dd0a221f9f0fa",
+        "type": "function",
+        "z": "391da2e83905b3e4",
+        "name": "HayGuardiaTwilio",
+        "func": "msg.payload = JSON.parse(msg.payload);\nmsg.payload = `El datacenter ha sobrepasado limites peligrosos de Temperatura.Usted, ${msg.payload.nombre} debería dirigirse hacia el datacenter de inmediato.`\nmsg.to = msg.payload.telefono\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1170,
+        "y": 480,
+        "wires": [
+            [
+                "726817b122ebeda6"
+            ]
+        ]
+    },
+    {
+        "id": "5db680f87615206c",
+        "type": "function",
+        "z": "391da2e83905b3e4",
+        "name": "Chequear dia de la semana",
+        "func": "var today = new Date();\nvar weekday = today.getDay();\nvar weekdayIds = [null, 1, 2, 3, 4, 5, 6, 7];\nmsg.url = \"http://10.124.0.2:5000/guardia/\" + weekdayIds[weekday];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 260,
+        "wires": [
+            [
+                "9b51021d53b2ef47"
+            ]
+        ]
+    },
+    {
+        "id": "2fa13e6a8b14aee5",
+        "type": "switch",
+        "z": "391da2e83905b3e4",
+        "name": "ChequearRespuesta",
+        "property": "statusCode",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "200",
+                "vt": "str"
+            },
+            {
+                "t": "neq",
+                "v": "200",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1040,
+        "y": 300,
+        "wires": [
+            [
+                "5bc68ce46513191b",
+                "6ef46babce7e3dc9"
+            ],
+            [
+                "2503d01732e8c7eb",
+                "6ef46babce7e3dc9"
+            ]
+        ]
+    },
+    {
+        "id": "2503d01732e8c7eb",
+        "type": "function",
+        "z": "391da2e83905b3e4",
+        "name": "NoHayGuardia",
+        "func": "msg.payload = {\n    chatId: 6286349072,\n    type: 'message',\n    content: `El datacenter ha sobrepasado limites peligrosos de Temperatura. No hay nadie de guardia debe ocuparse usted`\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1200,
+        "y": 400,
+        "wires": [
+            [
+                "2f9829cd1c433491"
+            ]
+        ]
+    },
+    {
+        "id": "e1aa9077996ce032",
+        "type": "function",
+        "z": "391da2e83905b3e4",
+        "name": "Chequear dia de la semana",
+        "func": "var today = new Date();\nvar weekday = today.getDay();\nvar weekdayIds = [null, 1, 2, 3, 4, 5, 6, 7];\nmsg.url = \"http://10.124.0.2:5000/guardia/\" + weekdayIds[weekday];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 200,
+        "wires": [
+            [
+                "ae8f21e10316b141"
+            ]
+        ]
+    },
+    {
+        "id": "29cc478ff6521b5b",
+        "type": "function",
+        "z": "391da2e83905b3e4",
+        "name": "Chequear dia de la semana",
+        "func": "var today = new Date();\nvar weekday = today.getDay();\nvar weekdayIds = [null, 1, 2, 3, 4, 5, 6, 7];\nmsg.url = \"http://10.124.0.2:5000/guardia/\" + weekdayIds[weekday];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 360,
+        "wires": [
+            [
+                "9b51021d53b2ef47"
+            ]
+        ]
+    },
+    {
+        "id": "6442714ec277c494",
+        "type": "switch",
+        "z": "391da2e83905b3e4",
+        "name": "ChequearRespuesta",
+        "property": "statusCode",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "200",
+                "vt": "str"
+            },
+            {
+                "t": "neq",
+                "v": "200",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 900,
+        "y": 420,
+        "wires": [
+            [
+                "aa2dd0a221f9f0fa"
+            ],
+            [
+                "991f87cd57e15446"
+            ]
+        ]
+    },
+    {
+        "id": "991f87cd57e15446",
+        "type": "function",
+        "z": "391da2e83905b3e4",
+        "name": "NoHayMensajeTwilio",
+        "func": "msg.payload = `El datacenter ha sobrepasado limites peligrosos de Temperatura.Usted, ${msg.payload.nombre} debería dirigirse hacia el datacenter de inmediato.`\nmsg.to=\"+542216187320\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1120,
+        "y": 560,
+        "wires": [
+            [
+                "726817b122ebeda6"
+            ]
+        ]
+    },
+    {
+        "id": "6ef46babce7e3dc9",
+        "type": "debug",
+        "z": "391da2e83905b3e4",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1500,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "9defd2181960f8f9",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "10.124.0.2",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "fcbb68bf39c09eb8",
+        "type": "influxdb",
+        "hostname": "10.124.0.2",
+        "port": "8086",
+        "protocol": "http",
+        "database": "datacenters_iot",
+        "name": "datacenter_info",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "1.x",
+        "url": "http://localhost:8086",
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "0983c59c34f03c75",
+        "type": "telegram bot",
+        "botname": "datacenter_iot_bot",
+        "usernames": "",
+        "chatids": "",
+        "baseapiurl": "",
+        "updatemode": "polling",
+        "pollinterval": "300",
+        "usesocks": false,
+        "sockshost": "",
+        "socksprotocol": "socks5",
+        "socksport": "6667",
+        "socksusername": "anonymous",
+        "sockspassword": "",
+        "bothost": "",
+        "botpath": "",
+        "localbotport": "8443",
+        "publicbotport": "8443",
+        "privatekey": "",
+        "certificate": "",
+        "useselfsignedcertificate": false,
+        "sslterminated": false,
+        "verboselogging": false
+    },
+    {
+        "id": "4e2c3b65d7b4b7a6",
+        "type": "twilio-api",
+        "name": "Twilio bot",
+        "sid": "ACc51c87f573198a248dc39f1e1591d8f0",
+        "from": "+1 484 939 7841"
+    }
+]
