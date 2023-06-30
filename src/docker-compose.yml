@@ -49,9 +49,14 @@ services:
     image: grafana/grafana
     ports:
       - "3000:3000"
+    volumes:
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - grafana-data:/var/lib/grafana
     depends_on:
       - influxdb
 
 volumes:
   influxdb:
+  grafana-data:
   db-api:
+  
