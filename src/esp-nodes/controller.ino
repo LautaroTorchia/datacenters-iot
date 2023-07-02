@@ -28,7 +28,7 @@ void setup() {
     Serial.println("Conectando a WiFi...");
   }
 
-  client.setServer(mqttServer, mqttPort);
+  client.setServer(mqtt_server, mqtt_port);
   client.setCallback(callback);
 
   connect();
