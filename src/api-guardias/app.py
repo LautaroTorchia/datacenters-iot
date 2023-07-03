@@ -9,7 +9,7 @@ def create_app():
     db_password = 'datacenter'
     db_name = 'guardias'
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{db_user}:{db_password}@10.124.0.2/{db_name}'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{db_user}:{db_password}@192.168.100.8/{db_name}'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     initialize_db(app)

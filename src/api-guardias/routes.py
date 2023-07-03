@@ -17,7 +17,7 @@ def obtener_guardia(dia):
         if guardia:
             return jsonify({'nombre': guardia.nombre, 'chat_id': guardia.chat_id, 'telefono': guardia.telefono})
         else:
-            return jsonify({'error': 'No se encontro guardia para el dia especificado'}, 404)
+            return jsonify({'error': 'No se encontro guardia para el dia especificado'} ), 404
     except Exception as e:
         return jsonify({'error': f'Error al obtener la guardia: {e}'})
 
