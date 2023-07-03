@@ -48,7 +48,7 @@ Se utilizaron scripts y servicios desplegados en ambas tecnologías para el sopo
 
 ChatGPT
 
-To contact us for access credentials or any potential questions, please reach out to:
+Para contactarnos para obtener credenciales de acceso o mas preguntas hablarnos aqui:
 
 - Lautaro Torchia: torchia.lautaro2@gmail.com
 - Gregorio Maclen: grego@example.com
