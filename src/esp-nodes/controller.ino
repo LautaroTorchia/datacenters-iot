@@ -67,12 +67,18 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.println(messageTemp);
 
   if (messageTemp == "encender") {
-    if (acIsOn) return;
+    if (acIsOn) {
+      Serial.println("El aire acondicionado ya está encendido");
+      return;
+    }
     Serial.println("Encendiendo el aire acondicionado");
     irsend.sendNEC(0x20DF10EF, 32);
     acIsOn = true;
   } else if (messageTemp == "apagar") {
-    if (!acIsOn) return;
+    if (!acIsOn) {
+      Serial.println("El aire acondicionado ya está apagado");
+      return;      
+    }
     Serial.println("Apagando el aire acondicionado");
     irsend.sendNEC(0x20DF906F, 32);
     acIsOn = false;
