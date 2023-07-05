@@ -15,7 +15,7 @@ const int DHT_PIN = 15;
 const int WATER_SENSOR_SIGNAL_PIN = 32;
 
 //
-const int TIME_BETWEEN_MEASURE = 5 * 60 * 1000;
+const int TIME_BETWEEN_MEASURE =  30 * 1000;
 // Información del sensor DHT
 DHTesp dht;
 WiFiClient espClient;
@@ -37,33 +37,34 @@ void setup() {
     delay(1000);
     Serial.println("Conectando a WiFi...");
   }
-  
   Serial.println("Conectado a la red WiFi");
-
   // Conectar al Broker MQTT
   client.setServer(mqttServer, mqttPort);
-
-  while (!client.connected()) {
-    Serial.println("Conectando al Broker MQTT...");
-    
-    if (client.connect("ESP32Client")) {
-      Serial.println("Conectado al Broker MQTT");
-    } else {
-      Serial.print("Error al conectar al Broker MQTT. Estado: ");
-      Serial.print(client.state());
-      delay(2000);
-    }
-  }
-  
   // Inicializar el sensor DHT
   dht.setup(DHT_PIN, DHTesp::DHT22);
   // Inicializamos el sensor de agua
   pinMode(WATER_SENSOR_SIGNAL_PIN, INPUT);
 }
 
+void reconnect() {
+    while (!client.connected()) {
+    Serial.println("Conectando al Broker MQTT...");
+    
+    if (client.connect("ESP32Client")) {
+      Serial.println("Conectado al Broker MQTT");
+    } else {
+      Serial.print("Fallo la conexion");
+      Serial.print(client.state());
+      delay(2000);
+    }
+  }
+}
+
 void loop() {
   // Obtener lecturas de temperatura y humedad
-
+  if (!client.connected()) {
+    reconnect();
+  }
   // Obtener estado de la detección de agua
   TempAndHumidity dhtData = dht.getTempAndHumidity();
   float temperature = dhtData.temperature;
