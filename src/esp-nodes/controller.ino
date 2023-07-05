@@ -1,7 +1,8 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 #include <IRremoteESP8266.h>
-#include <IRsend.h>
+#include <IRac.h>
+#include <IRutils.h>
 
 const char* ssid = "Wokwi-GUEST";
 const char* password = "";
@@ -14,15 +15,57 @@ const char* mqtt_client_name = "ESP32Controller";
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-// Pins de salida para el control infrarrojo
-const int IR_PIN = 5;
-// Objeto para enviar señales infrarrojas
-IRsend irsend(IR_PIN);
+const uint16_t kIrLed = 4;  // The ESP GPIO pin to use that controls the IR LED.
+IRac ac(kIrLed);  // Create a A/C object using GPIO to sending messages with.
 
 bool acIsOn = false;
 
+void configAc() {
+  ac.next.protocol = decode_type_t::DAIKIN;  // Set a protocol to use.
+  ac.next.model = 1;  // Some A/Cs have different models. Try just the first.
+  ac.next.mode = stdAc::opmode_t::kCool;  // Run in cool mode initially.
+  ac.next.celsius = true;  // Use Celsius for temp units. False = Fahrenheit
+  ac.next.degrees = 24;  // 24 degrees.
+  ac.next.fanspeed = stdAc::fanspeed_t::kMedium;  // Start the fan at medium.
+  ac.next.swingv = stdAc::swingv_t::kOff;  // Don't swing the fan up or down.
+  ac.next.swingh = stdAc::swingh_t::kOff;  // Don't swing the fan left or right.
+  ac.next.light = false;  // Turn off any LED/Lights/Display that we can.
+  ac.next.beep = false;  // Turn off any beep from the A/C if we can.
+  ac.next.econo = false;  // Turn off any economy modes if we can.
+  ac.next.filter = false;  // Turn off any Ion/Mold/Health filters if we can.
+  ac.next.turbo = false;  // Don't use any turbo/powerful/etc modes.
+  ac.next.quiet = false;  // Don't use any quiet/silent/etc modes.
+  ac.next.sleep = -1;  // Don't set any sleep time or modes.
+  ac.next.clean = false;  // Turn off any Cleaning options if we can.
+  ac.next.clock = -1;  // Don't set any current time if we can avoid it.
+  ac.next.power = false;  // Initially start with the unit off.
+}
+
+void sendToAc(bool turnOn) {
+  // For every protocol the library has ...
+  for (int i = 1; i < kLastDecodeType; i++) {
+    decode_type_t protocol = (decode_type_t)i;
+    // If the protocol is supported by the IRac class ...
+    if (ac.isProtocolSupported(protocol)) {
+      Serial.println("Protocol " + String(protocol) + " / " +
+                     typeToString(protocol) + " is supported.");
+      ac.next.protocol = protocol;  // Change the protocol used.
+      ac.next.power = turnOn ? true : false;  // Turn on or off the A/C unit.
+      Serial.println("Sending a message to turn " +
+                     String(turnOn ? "ON" : "OFF") + " the A/C unit.");
+      Serial.println("");
+      ac.sendAc();  // Have the IRac class create and send a message.
+      // delay(2000);  // Wait 2 seconds.
+    }
+  }
+  Serial.println("--------");
+}
+
 void setup() {
   Serial.begin(115200);
+  delay(200);
+
+  configAc();
 
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
@@ -57,11 +100,10 @@ void connect() {
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
-  Serial.print("Mensaje recibido en el topic: ");
-  Serial.println(topic);
-
+  Serial.print("Mensaje recibido [");
+  Serial.print(topic);
+  Serial.print("] ");
   String messageTemp;
-
   for (int i = 0; i < length; i++)
     messageTemp += (char)payload[i];
   Serial.println(messageTemp);
@@ -72,7 +114,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
       return;
     }
     Serial.println("Encendiendo el aire acondicionado");
-    irsend.sendNEC(0x20DF10EF, 32);
+    // irsend.sendNEC(0x20DF10EF, 32);
+    sendToAc(true);
     acIsOn = true;
   } else if (messageTemp == "apagar") {
     if (!acIsOn) {
@@ -80,7 +123,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
       return;      
     }
     Serial.println("Apagando el aire acondicionado");
-    irsend.sendNEC(0x20DF906F, 32);
+    // irsend.sendNEC(0x20DF906F, 32);
+    sendToAc(false);
     acIsOn = false;
   } else
     Serial.println("Comando desconocido");
