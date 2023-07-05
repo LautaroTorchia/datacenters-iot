@@ -1,0 +1,123 @@
+Protocol 15 / COOLIX is supported.
+
+Protocol 16 / DAIKIN is supported.
+
+Protocol 18 / KELVINATOR is supported.
+
+Protocol 20 / MITSUBISHI_AC is supported.
+
+Protocol 24 / GREE is supported.
+
+Protocol 27 / ARGO is supported.
+
+Protocol 28 / TROTEC is supported.
+
+Protocol 32 / TOSHIBA_AC is supported.
+
+Protocol 33 / FUJITSU_AC is supported.
+
+Protocol 34 / MIDEA is supported.
+
+Protocol 38 / HAIER_AC is supported.
+
+Protocol 40 / HITACHI_AC is supported.
+
+Protocol 41 / HITACHI_AC1 is supported.
+
+Protocol 44 / HAIER_AC_YRW02 is supported.
+
+Protocol 45 / WHIRLPOOL_AC is supported.
+
+Protocol 46 / SAMSUNG_AC is supported.
+
+Protocol 48 / ELECTRA_AC is supported.
+
+Protocol 49 / PANASONIC_AC is supported.
+
+Protocol 51 / LG2 is supported.
+
+Protocol 53 / DAIKIN2 is supported.
+
+Protocol 54 / VESTEL_AC is supported.
+
+Protocol 55 / TECO is supported.
+
+Protocol 57 / TCL112AC is supported.
+
+Protocol 59 / MITSUBISHI_HEAVY_88 is supported.
+
+Protocol 60 / MITSUBISHI_HEAVY_152 is supported.
+
+Protocol 61 / DAIKIN216 is supported.
+
+Protocol 62 / SHARP_AC is supported.
+
+Protocol 63 / GOODWEATHER is supported.
+
+Protocol 65 / DAIKIN160 is supported.
+
+Protocol 66 / NEOCLIMA is supported.
+
+Protocol 67 / DAIKIN176 is supported.
+
+Protocol 68 / DAIKIN128 is supported.
+
+Protocol 69 / AMCOR is supported.
+
+Protocol 70 / DAIKIN152 is supported.
+
+Protocol 71 / MITSUBISHI136 is supported.
+
+Protocol 72 / MITSUBISHI112 is supported.
+
+Protocol 73 / HITACHI_AC424 is supported.
+
+Protocol 78 / DAIKIN64 is supported.
+
+Protocol 79 / AIRWELL is supported.
+
+Protocol 80 / DELONGHI_AC is supported.
+
+Protocol 84 / CARRIER_AC64 is supported.
+
+Protocol 85 / HITACHI_AC344 is supported.
+
+Protocol 86 / CORONA_AC is supported.
+
+Protocol 89 / SANYO_AC is supported.
+
+Protocol 90 / VOLTAS is supported.
+
+Protocol 92 / TRANSCOLD is supported.
+
+Protocol 93 / TECHNIBEL_AC is supported.
+
+Protocol 94 / MIRAGE is supported.
+
+Protocol 96 / PANASONIC_AC32 is supported.
+
+Protocol 98 / ECOCLIM is supported.
+
+Protocol 100 / TRUMA is supported.
+
+Protocol 101 / HAIER_AC176 is supported.
+
+Protocol 102 / TEKNOPOINT is supported.
+
+Protocol 103 / KELON is supported.
+
+Protocol 104 / TROTEC_3550 is supported.
+
+Protocol 105 / SANYO_AC88 is supported.
+
+Protocol 108 / RHOSS is supported.
+
+Protocol 109 / AIRTON is supported.
+
+Protocol 111 / HITACHI_AC264 is supported.
+
+Protocol 113 / HITACHI_AC296 is supported.
+
+Protocol 115 / HAIER_AC160 is supported.
+
+Protocol 120 / BOSCH144 is supported.
