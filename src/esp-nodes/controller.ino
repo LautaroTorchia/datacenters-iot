@@ -55,7 +55,7 @@ void sendToAc(bool turnOn) {
                      String(turnOn ? "ON" : "OFF") + " the A/C unit.");
       Serial.println("");
       ac.sendAc();  // Have the IRac class create and send a message.
-      // delay(2000);  // Wait 2 seconds.
+      delay(1000);
     }
   }
   Serial.println("--------");
@@ -114,7 +114,6 @@ void callback(char* topic, byte* payload, unsigned int length) {
       return;
     }
     Serial.println("Encendiendo el aire acondicionado");
-    // irsend.sendNEC(0x20DF10EF, 32);
     sendToAc(true);
     acIsOn = true;
   } else if (messageTemp == "apagar") {
@@ -123,7 +122,6 @@ void callback(char* topic, byte* payload, unsigned int length) {
       return;      
     }
     Serial.println("Apagando el aire acondicionado");
-    // irsend.sendNEC(0x20DF906F, 32);
     sendToAc(false);
     acIsOn = false;
   } else
