@@ -19,6 +19,8 @@ const int IR_PIN = 5;
 // Objeto para enviar señales infrarrojas
 IRsend irsend(IR_PIN);
 
+bool AcIsOn = false;
+
 void setup() {
   Serial.begin(115200);
 
@@ -65,11 +67,15 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.println(messageTemp);
 
   if (messageTemp == "encender") {
+    if (AcIsOn) return;
     Serial.println("Encendiendo el aire acondicionado");
     irsend.sendNEC(0x20DF10EF, 32);
+    acIsOn = true;
   } else if (messageTemp == "apagar") {
+    if (!AcIsOn) return;
     Serial.println("Apagando el aire acondicionado");
     irsend.sendNEC(0x20DF906F, 32);
+    acIsOn = false;
   } else
     Serial.println("Comando desconocido");
 }
